@@ -4,7 +4,7 @@ list favorites products, product rating, product reviews.
 
 
 Libraries: 
-- Django
+- django
 - pillow
 
 For correct work: 
