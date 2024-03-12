@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+{% if messages %}
+<div class="col-3">
+    {% for m in messages %}
+    <div class="alert {% if m.tags == 'error' %}alert-danger{% elif m.tags == 'success' %}alert-success{% endif %}">
+        {{ m }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<form action="{% url 'reg_log:login' %}" method="POST" class="col-3 form">
+    {% csrf_token %}
+    {{ form }}
+    <div class="nav-item mt-2">
+    <input type="submit" class="btn btn-primary mt-2" value="Login">
+    </div>
+</form>
+<a href="{% url 'reg_log:register' %}" class="btn btn-primary mt-2">Register</a>
+<a href="{% url 'reg_log:cant_enter' %}" class="btn btn-primary mt-2">Не войти</a>
+{% endblock %}

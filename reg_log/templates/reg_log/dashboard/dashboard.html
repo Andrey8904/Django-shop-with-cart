@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<h1>Dashboard</h1>
+<h2>Hello, {{ user.user_name }}</h2>
+
+<div class="row">
+    {% for product in favorite_products %}
+    <div class="col-md-3">
+        <div class="card">
+            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                                          style="height:400px; width:100%"></a>
+        </div>
+        <div class="card-body">
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            <hr>
+            <p>{{ product.price }}</p>
+            <form action="{% url 'favorites:remove_favorite' product.id %}" method="post" class="nav-item mt-2">
+                {% csrf_token %}
+                <input type="submit" value="Удалить">
+
+
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

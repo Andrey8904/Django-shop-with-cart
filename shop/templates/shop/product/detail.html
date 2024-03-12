@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block main %}
+<h1>main page</h1>
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="{{ product.image.url }}" alt="" class="w-100">
+    </div>
+    <div class="col-md-7">
+        <h2>{{ product.name }}</h2>
+        <div>
+            <a href="{% url 'rating:add_rating' product.id 1 %}">&#9734;</a>
+            <a href="{% url 'rating:add_rating' product.id 2 %}">&#9734;</a>
+            <a href="{% url 'rating:add_rating' product.id 3 %}">&#9734;</a>
+            <a href="{% url 'rating:add_rating' product.id 4 %}">&#9734;</a>
+            <a href="{% url 'rating:add_rating' product.id 5 %}">&#9734;</a>
+        </div>
+        <hr>
+        <a href="{% url 'shop:products_in_cat' product.category %}"><h3>{{ product.category }}</h3></a>
+        <hr>
+        <p>{{ product.description }}</p>
+        <hr>
+        <p>{{ product.price }} $</p>
+        <hr>
+        <p>{{ product.stock }}</p>
+
+
+        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+            {% csrf_token %}
+            {{ cart_product_form }}
+            <input type="submit" value="Добавить в корзину" class="nav-item mt-2">
+
+        </form>
+
+        <form action="{% url 'favorites:add_to_favorites' product.id %}" method="post" class="nav-item mt-2">
+            {% csrf_token %}
+            <input type="submit" value="Добавить в избраное">
+
+
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <h3 class="mt-4">Отзывы</h3>
+    <div class="col-7">
+        {% for otziv in get_reviews %}
+
+            {% for user in users_reviews %}
+                {% if user.id == otziv.user_id %}
+                    <div class="row bg-light p-2 mt-2">
+                        <div class="col-8">
+                            <p>{{ user.user_name}}</p>
+                            <p>{{ otziv.text_review }}</p>
+                        </div>
+                        {% if user.id == session_user_id %}
+                            <div class="row col-4 align-items-center">
+                                <form action="{% url 'product_review:remove_review' otziv.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Удалить отзыв</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% empty %}
+            <p>No com</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-7 mt-3">
+        <form action="{% url 'product_review:add_review' product.id %}" method="post" class="form col-6 mt-4">
+            {% csrf_token %}
+            <textarea name="product_review" placeholder="Ваш отзыв о товаре" cols="30" rows="3"
+                      class="form-control"></textarea>
+            <input type="submit" value="Добавить отзыв" class="btn btn-success mt-2">
+        </form>
+    </div>
+
+</div>
+
+
+{% endblock %}

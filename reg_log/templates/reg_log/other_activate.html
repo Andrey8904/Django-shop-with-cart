@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Main page{% endblock %}
+
+{% block main %}
+<h1>Email для активации учетной записи</h1>
+<hr>
+{% if messages %}
+<div class="col-3">
+    {% for m in messages %}
+    <div class="alert {% if m.tags == 'error' %}alert-danger{% elif m.tags == 'success' %}alert-success{% endif %}">
+        {{ m }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<form method="post" class="col-3">
+    {% csrf_token %}
+    {{ form_email }}
+    <input type="submit" value="Отправить код" class="form-control mt-2">
+</form>
+{% endblock %}

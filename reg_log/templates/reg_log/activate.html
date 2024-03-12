@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+{% if messages %}
+<div class="col-3">
+    {% for m in messages %}
+    <div class="alert {% if m.tags == 'error' %}alert-danger{% elif m.tags == 'success' %}alert-success{% endif %}">
+        {{ m }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Register">
+</form>
+{% endblock %}

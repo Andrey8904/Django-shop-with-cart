@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<h1>Выберите причину</h1>
+<hr>
+<a href="{% url 'restore:restore_password' %}" class="btn btn-primary">Забыл пароль</a>
+<a href="{% url 'reg_log:other_activate' %}" class="btn btn-primary">Активировать аккаунт</a>
+
+{% endblock %}
