@@ -8,7 +8,7 @@ from shop.models import Product
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from random import randint
-from restore_password.views import send_email
+from .tasks import send_email_task
 
 
 class Register(View):
@@ -51,7 +51,7 @@ class Register(View):
                     # генерирование кода
                     secret_code = randint(10000, 99999)
                     # отправка кода на почту
-                    send_email(user_email, secret_code)
+                    send_email_task.delay(user_email, secret_code)
                     request.session['u_email'] = user_email
                     # запись кода в сессию
                     request.session['secret_code'] = secret_code
@@ -109,7 +109,7 @@ class OtherActivate(View):
         if user is not None and user.user_activated == 0:
             u_email = user.user_email
             secret_code = randint(10000, 99999)
-            send_email(user_email, secret_code)
+            send_email_task.delay(user_email, secret_code)
             request.session['secret_code'] = secret_code
             request.session['u_email'] = u_email
             print(secret_code)

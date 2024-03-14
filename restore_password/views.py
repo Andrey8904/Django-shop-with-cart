@@ -3,8 +3,8 @@ from .forms import RestorePasswordForm, RestoreCodeForm, NewPasswordForm
 from reg_log.models import CustomUser
 from django.contrib import messages
 from random import randint
-import smtplib
-from email.mime.text import MIMEText
+from .tasks import send_email_task
+
 
 
 def restore(request):
@@ -23,7 +23,7 @@ def restore(request):
         if user is not None:
             u_email = user.user_email
             secret_code = randint(10000, 99999)
-            send_email(user_email, secret_code)
+            send_email_task.delay(user_email, secret_code)
             request.session['secret_code'] = secret_code
             request.session['u_email'] = u_email
             print(secret_code)
@@ -75,20 +75,4 @@ def new_password(request):
         return redirect('reg_log:login')
 
 
-def send_email(user_email, s_code):
-    port = 587
-    smtp_google = 'smtp.gmail.com'
-    sender = 'asd91124@gmail.com'
-    password = 'nefsrqwurpswrhrq'
-    server = smtplib.SMTP(smtp_google, port)
-    server.starttls()
-    try:
-        server.login(sender, password)
-        msg = MIMEText(str(s_code))
-        msg['Subject'] = 'Secret code'
-        msg['To'] = user_email
-        server.sendmail(sender, user_email, msg.as_string())
-        server.quit()
-        return 'отправлено'
-    except Exception as ex:
-        print('EX: ', ex)
+
