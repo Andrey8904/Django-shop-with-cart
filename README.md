@@ -6,6 +6,9 @@ list favorites products, product rating, product reviews.
 Libraries: 
 - django
 - pillow
+- eventlet
+- redis
+- celery
 
 For correct work: 
 - make migrations

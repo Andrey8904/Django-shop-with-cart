@@ -9,6 +9,9 @@ click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.3.0
 Django==5.0.1
+dnspython==2.6.1
+eventlet==0.35.2
+greenlet==3.0.3
 kombu==5.3.5
 pillow==10.2.0
 prompt-toolkit==3.0.43
