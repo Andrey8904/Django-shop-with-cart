@@ -28,7 +28,6 @@ urlpatterns = [
     path('', include('product_review.urls', namespace='product_review')),
     path('', include('restore_password.urls', namespace='restore_password')),
     path('', include('rating.urls', namespace='rating')),
-    path('__debug__/', include("debug_toolbar.urls")),
 
 ]
 admin.site.site_header = 'Моя админка'

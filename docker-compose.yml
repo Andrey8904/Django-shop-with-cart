@@ -1,0 +1,29 @@
+version: '3.10'
+
+services:
+  redis:
+    image: redis:5.0.7-alpine
+
+  django:
+    container_name: django
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - redis
+
+  celery:
+    container_name: celery
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A shop_project worker --loglevel=info -P eventlet
+    volumes:
+      - .:/app
+    depends_on:
+      - django
