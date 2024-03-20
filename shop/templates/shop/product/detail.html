@@ -11,6 +11,9 @@
     </div>
     <div class="col-md-7">
         <h2>{{ product.name }}</h2>
+        {% if fact_rating %}
+        <span>&#11088; {{ fact_rating }}</span>
+        {% endif %}
         <div>
             <a href="{% url 'rating:add_rating' product.id 1 %}">&#9734;</a>
             <a href="{% url 'rating:add_rating' product.id 2 %}">&#9734;</a>

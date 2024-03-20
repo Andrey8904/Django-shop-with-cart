@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-5n(m=cln!mon*mp!13pa2lrb1*%dvr7z^m1601)5(_+k&@gtb=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']
 
 
 # Application definition
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'product_review',
     'restore_password',
     'rating',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'shop_project.urls'
@@ -150,3 +153,5 @@ PASSWORD_HASHERS = [
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
+

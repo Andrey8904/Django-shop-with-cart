@@ -3,6 +3,7 @@ from .models import Product
 from reg_log.models import CustomUser
 from cart.forms import CartAddProductForm
 from product_review.models import AddReview
+from rating.models import ProductRating
 
 
 def index(request):
@@ -18,20 +19,27 @@ def product_detail(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug, available=True)
 
     cart_product_form = CartAddProductForm()
-    get_reviews = AddReview.objects.filter(product_id=product.id).all()
+    get_reviews = AddReview.objects.filter(product_id=product.id)
     get_user_ids = [get_id.user_id for get_id in get_reviews]
     print(get_user_ids)
     users_reviews = CustomUser.objects.filter(id__in=get_user_ids)
 
+    fact_rating = None
+    get_rating = ProductRating.objects.filter(product_id=product.id)
+
+    if get_rating:
+        product_ratings = [rating.rating_value for rating in get_rating]
+        fact_rating = round((sum(product_ratings) / len(product_ratings)), 1)
+
     if 'user_id' in request.session:
-        session_user_id = request.session['user_id']
         return render(request, 'shop/product/detail.html',
                       {'product': product, 'cart_product_form': cart_product_form, 'user': True,
-                       'session_user_id': session_user_id,
-                       'users_reviews': users_reviews, 'get_reviews': get_reviews})
+                       'session_user_id': request.session['user_id'],
+                       'users_reviews': users_reviews, 'get_reviews': get_reviews, 'fact_rating': fact_rating})
+
     return render(request, 'shop/product/detail.html',
                   {'product': product, 'cart_product_form': cart_product_form, 'user': None,
-                   'users_reviews': users_reviews, 'get_reviews': get_reviews})
+                   'users_reviews': users_reviews, 'get_reviews': get_reviews, 'fact_rating': fact_rating})
 
 
 def products_in_cat(request, product_cat):
