@@ -27,3 +27,15 @@ services:
       - .:/app
     depends_on:
       - django
+
+  flower:
+    container_name: flower
+    build:
+      context: .
+    ports:
+      - 5555:5555
+    command: celery -A shop_project flower
+    volumes:
+      - .:/app
+    depends_on:
+      - celery

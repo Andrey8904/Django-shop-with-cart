@@ -4,6 +4,7 @@ from reg_log.models import CustomUser
 from django.contrib import messages
 from random import randint
 from .tasks import send_email_task
+from django.contrib.auth.hashers import make_password
 
 
 
@@ -29,7 +30,6 @@ def restore(request):
             print(secret_code)
             messages.success(request, 'Код отправлен, укажите код в форме')
             return redirect('restore:restore_code')
-            # return render(request, 'restore_password/secret_code.html', data_one)
 
         form_email = RestorePasswordForm()
         data = {'form_email': form_email, 'user': None}
@@ -60,6 +60,7 @@ def new_password(request):
     data = {'form_new_password': form, 'user': None}
     if request.method == 'GET':
         return render(request, 'restore_password/new_password.html', data)
+
     if request.method == 'POST':
         password_one = request.POST['user_password']
         password_two = request.POST['user_password_repeat']
@@ -69,7 +70,7 @@ def new_password(request):
 
         u_email = request.session['u_email']
         user = CustomUser.objects.filter(user_email=u_email).first()
-        CustomUser.objects.filter(pk=user.id).update(user_password=password_one)
+        CustomUser.objects.filter(pk=user.id).update(user_password=make_password(password_one))
 
         messages.success(request, 'успешный смена пароля')
         return redirect('reg_log:login')
