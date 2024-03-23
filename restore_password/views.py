@@ -27,7 +27,6 @@ def restore(request):
             send_email_task.delay(user_email, secret_code)
             request.session['secret_code'] = secret_code
             request.session['u_email'] = u_email
-            print(secret_code)
             messages.success(request, 'Код отправлен, укажите код в форме')
             return redirect('restore:restore_code')
 
@@ -43,10 +42,9 @@ def restore_code(request):
 
     if request.method == 'GET':
         form = RestoreCodeForm()
-        data = {'form_code': form, 'user': None}
-        return render(request, 'restore_password/secret_code.html', data)
-    user_code = request.POST['user_code']
-    if int(user_code) != request.session['secret_code']:
+        return render(request, 'restore_password/secret_code.html', {'form_code': form, 'user': None})
+
+    if int(request.POST['user_code']) != request.session['secret_code']:
         messages.error(request, 'не тот код')
         return redirect('restore:restore_password')
     return redirect('restore:new_password')

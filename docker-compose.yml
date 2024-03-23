@@ -13,7 +13,7 @@ services:
       - 8000:8000
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "mkdir -p media/product && python manage.py migrate && python manage.py createsuperuser --no-input --username admin --email asd91123@mail.ru --password Xy23Nyt&*(Tyu3 && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - redis
 

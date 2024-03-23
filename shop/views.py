@@ -9,8 +9,7 @@ from rating.models import ProductRating
 def index(request):
     products = Product.objects.all()
     if 'user_id' in request.session:
-        user_id = request.session['user_id']
-        user = CustomUser.objects.get(pk=user_id)
+        user = CustomUser.objects.get(pk=request.session['user_id'])
         return render(request, 'shop/index.html', {'products': products, 'user': user})
     return render(request, 'shop/index.html', {'products': products, 'user': None})
 
@@ -21,7 +20,6 @@ def product_detail(request, product_slug):
     cart_product_form = CartAddProductForm()
     get_reviews = AddReview.objects.filter(product_id=product.id)
     get_user_ids = [get_id.user_id for get_id in get_reviews]
-    print(get_user_ids)
     users_reviews = CustomUser.objects.filter(id__in=get_user_ids)
 
     fact_rating = None

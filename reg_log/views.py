@@ -91,8 +91,7 @@ class CantEnter(View):
     def get(self, request):
         if 'user_id' in request.session:
             return redirect('reg_log:dashboard')
-        data = {'user': None}
-        return render(request, 'reg_log/cant_enter.html', data)
+        return render(request, 'reg_log/cant_enter.html', {'user': None})
 
 
 class OtherActivate(View):
@@ -112,7 +111,6 @@ class OtherActivate(View):
             send_email_task.delay(user_email, secret_code)
             request.session['secret_code'] = secret_code
             request.session['u_email'] = u_email
-            print(secret_code)
             messages.success(request, 'Код отправлен, укажите код в форме')
             return redirect('reg_log:other_activate_code')
         messages.error(request, 'Нет Email или вы уже активированны')
