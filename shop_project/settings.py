@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-5n(m=cln!mon*mp!13pa2lrb1*%dvr7z^m1601)5(_+k&@gtb=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['89.111.170.234','fastsneakers.ru']
+ALLOWED_HOSTS = ['89.111.170.234', 'fastsneakers.ru']
 
 
 
@@ -152,4 +152,8 @@ PASSWORD_HASHERS = [
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
 
