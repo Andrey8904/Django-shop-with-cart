@@ -13,7 +13,7 @@ services:
       - 8000:8000
     volumes:
       - .:/app
-    command: bash -c "mkdir -p media/product && python manage.py migrate && python manage.py collectstatic --yes && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "mkdir -p media/product && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - redis
 
